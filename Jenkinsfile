@@ -5,7 +5,7 @@ pipeline {
         S3BUCKET="jenkin-react-js"
     }
     stages {
-     agent{
+        agent{
             docker {
                 image 'node:22-alpine'
                 reuseNode true
@@ -24,6 +24,7 @@ pipeline {
            
                 }
             }
+    }
      stage("Aws Deploy") {
          agent{
             docker {
