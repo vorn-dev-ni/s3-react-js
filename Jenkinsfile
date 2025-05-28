@@ -28,7 +28,7 @@ pipeline {
 
 
                     aws --version
-                    aws s3 sync ./dist s3://${S3BUCKET} --delete
+                    aws s3 sync ./dist s3://${S3BUCKET} 
                     aws s3 ls
                  """
 }
