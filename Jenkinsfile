@@ -1,53 +1,46 @@
 pipeline {
-
     agent any
+
     environment {
-        S3BUCKET="jenkin-react-js"
+        S3BUCKET = "jenkin-react-js"
     }
+
     stages {
-       stages {
-        agent{
-            docker {
-                image 'node:22-alpine'
-                reuseNode true
-            }
-     
-        }
-            stage('Install and build') {
-
-                steps {
-
-                        sh """
-                                node --version
-                                npm ci
-                                npm run build
-                        """
-           
+        stage('Install and Build') {
+            agent {
+                docker {
+                    image 'node:22-alpine'
+                    reuseNode true
                 }
             }
-    }
-     stage("Aws Deploy") {
-         agent{
-            docker {
-                image 'amazon/aws-cli:latest'
-                args "--entrypoint=''"
-                reuseNode true
+            steps {
+                cleanWs()
+                sh """
+                    node --version
+                    npm ci
+                    npm run build
+                """
             }
-     
-        }
-             steps {
-                withCredentials([usernamePassword(credentialsId: 's3-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                   sh """ 
-
-
-                    aws --version
-                    aws s3 sync ./dist s3://${S3BUCKET} --delete
-                    aws s3 ls
-                 """
-}
-             }
         }
 
+        stage('AWS Deploy') {
+            agent {
+                docker {
+                    image 'amazon/aws-cli:latest'
+                    args '--entrypoint=""'
+                    reuseNode true
+                }
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 's3-aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    sh """
+                        aws --version
+                        ls -la ./dist
+                        aws s3 sync ./dist s3://${S3BUCKET} --delete
+                        aws s3 ls s3://${S3BUCKET}
+                    """
+                }
+            }
+        }
     }
-
 }
