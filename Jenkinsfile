@@ -5,15 +5,26 @@ pipeline {
         S3BUCKET="jenkin-react-js"
     }
     stages {
-            // stage('Cleaning WorkSpace') {
+     agent{
+            docker {
+                image 'node:22-alpine'
+                reuseNode true
+            }
+     
+        }
+            stage('Install and build') {
 
-            //     steps {
+                steps {
 
-            //         cleanWs()
+                        sh """
+                                node --version
+                                npm ci
+                                npm run build
+                        """
            
-            //     }
-            // }
-     stage("Aws Configure") {
+                }
+            }
+     stage("Aws Deploy") {
          agent{
             docker {
                 image 'amazon/aws-cli:latest'
@@ -28,7 +39,7 @@ pipeline {
 
 
                     aws --version
-                    aws s3 sync ./dist s3://${S3BUCKET} 
+                    aws s3 sync ./dist s3://${S3BUCKET} --delete
                     aws s3 ls
                  """
 }
