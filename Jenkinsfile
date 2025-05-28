@@ -5,14 +5,14 @@ pipeline {
         S3BUCKET="jenkin-react-js"
     }
     stages {
-            stage('Cleaning WorkSpace') {
+            // stage('Cleaning WorkSpace') {
 
-                steps {
+            //     steps {
 
-                    cleanWs()
+            //         cleanWs()
            
-                }
-            }
+            //     }
+            // }
      stage("Aws Configure") {
          agent{
             docker {
