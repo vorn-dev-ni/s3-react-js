@@ -22,7 +22,7 @@ pipeline {
              steps {
                    sh """ 
                     aws --version
-                    aws ls
+                    aws s3 ls
                  """
              }
         }
