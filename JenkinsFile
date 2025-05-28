@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Test') {
+            steps {
+                cleanWs()
+                echo 'Hello World'
+            }
+        }
+    }
+
+      stages {
+        stage('Deploying') {
+            steps {
+                echo 'Deploying...'
+      
+            }
+        }
+    }
+}
