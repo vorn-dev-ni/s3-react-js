@@ -14,7 +14,7 @@ pipeline {
                 }
             }
             steps {
-                cleanWs()
+         
                 sh """
                     node --version
                     npm ci
@@ -38,7 +38,9 @@ pipeline {
                         ls -la ./dist
                         aws s3 sync ./dist s3://${S3BUCKET} --delete
                         aws s3 ls s3://${S3BUCKET}
+                        
                     """
+                           cleanWs()
                 }
             }
         }
