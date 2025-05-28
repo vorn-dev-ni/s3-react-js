@@ -10,12 +10,7 @@ pipeline {
            
                 }
             }
-
-    }
-
-    stages {
-      
-        stage("Aws Configure") {
+     stage("Aws Configure") {
          agent{
             docker {
                 image 'amazon/aws-cli'
@@ -30,5 +25,7 @@ pipeline {
                  """
              }
         }
+
     }
+
 }
