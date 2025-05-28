@@ -1,6 +1,9 @@
 pipeline {
 
     agent any
+    environment {
+        S3BUCKET="jenkin-react-js"
+    }
     stages {
             stage('Cleaning WorkSpace') {
 
@@ -22,7 +25,10 @@ pipeline {
              steps {
                 withCredentials([usernamePassword(credentialsId: 's3-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                    sh """ 
+
+
                     aws --version
+                    aws s3 sync ./dist s3://${S3BUCKET} --delete
                     aws s3 ls
                  """
 }
