@@ -5,6 +5,7 @@ pipeline {
         S3BUCKET="jenkin-react-js"
     }
     stages {
+       stages {
         agent{
             docker {
                 image 'node:22-alpine'
