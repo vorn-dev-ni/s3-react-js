@@ -1,13 +1,12 @@
 pipeline {
 
-
     agent{
         any
     }
     stages {
             stage('Pre') {
 
-                step {
+                steps {
                     echo "Testing"
                 }
             }
