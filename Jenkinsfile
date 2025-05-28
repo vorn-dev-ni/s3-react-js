@@ -23,9 +23,11 @@ pipeline {
      
         }
         stage("Aws Configure") {
-                sh """ 
+             steps {
+                   sh """ 
                     aws --version
                  """
+             }
         }
     }
 }
