@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         S3BUCKET = "jenkin-react-js"
+        AWS_DEFAULT_REGION="us-east-1"
     }
 
     stages {
@@ -21,6 +22,7 @@ pipeline {
                     sh """
                        aws --version
                         aws ecs register-task-definition --cli-input-json file://task-definition.json
+                        
                         
                     """
                            cleanWs()
