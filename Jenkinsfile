@@ -22,8 +22,8 @@ pipeline {
                     sh """
                         aws --version
                         sudo yum install jq -y
-                        LATESTVERSION = $(aws ecs register-task-definition --cli-input-json file://task-definition.json | jq .taskDefinition.revision)
-                        echo '${LATESTVERSION}'
+                       LATESTVERSION=\$(aws ecs register-task-definition --cli-input-json file://task-definition.json | jq .taskDefinition.revision)
+                        echo "${LATESTVERSION}"
                         aws ecs update-service \
     --cluster learn-jenkin-prod \
     --service LearnJenkins-App-Prod-service-79ycmcel \
