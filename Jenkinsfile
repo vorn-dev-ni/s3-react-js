@@ -13,7 +13,7 @@ pipeline {
             agent {
                 docker {
                     image 'amazon/aws-cli:latest'
-                    args '--entrypoint=""'
+                    args '-u root --entrypoint=""'
                     reuseNode true
                 }
             }
@@ -21,7 +21,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 's3-aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh '''
                         aws --version
-                        sudo yum install jq -y
+                        yum install jq -y
                         LATESTVERSION=$(aws ecs register-task-definition --cli-input-json file://task-definition.json | jq .taskDefinition.revision)
                         echo $LATESTVERSION
                         aws ecs update-service \
