@@ -20,7 +20,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 's3-aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh """
                        aws --version
-                        aws ecs register-task-definition --cli-input-json file://my-app/task-definition.json
+                        aws ecs register-task-definition --cli-input-json file://task-definition.json
                         
                     """
                            cleanWs()
