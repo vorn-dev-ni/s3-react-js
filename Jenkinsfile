@@ -19,18 +19,18 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 's3-aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                    sh """
+                    sh '''
                         aws --version
                         sudo yum install jq -y
-                       LATESTVERSION=\$(aws ecs register-task-definition --cli-input-json file://task-definition.json | jq .taskDefinition.revision)
-                        echo "${LATESTVERSION}"
+                        LATESTVERSION=$(aws ecs register-task-definition --cli-input-json file://task-definition.json | jq .taskDefinition.revision)
+                        echo $LATESTVERSION
                         aws ecs update-service \
     --cluster learn-jenkin-prod \
     --service LearnJenkins-App-Prod-service-79ycmcel \
-    --task-definition LearnJenkins-App-Prod:${LATESTVERSION}
+    --task-definition LearnJenkins-App-Prod:$LATESTVERSION
 
                         
-                    """
+                 '''
                            cleanWs()
                 }
             }
