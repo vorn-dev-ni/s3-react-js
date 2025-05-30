@@ -27,7 +27,11 @@ pipeline {
                         aws ecs update-service \
     --cluster learn-jenkin-prod \
     --service LearnJenkins-App-Prod-service-79ycmcel \
-    --task-definition LearnJenkins-App-Prod:$LATESTVERSION
+    --task-definition LearnJenkins-App-Prod:$LATESTVERSION 
+
+   aws ecs wait services-stable \
+    --cluster  learn-jenkin-prod \
+    --services LearnJenkins-App-Prod-service-79ycmcel
 
                         
                  '''
