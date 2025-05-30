@@ -6,7 +6,22 @@ pipeline {
     }
 
     stages {
-    
+        stage('Install and Build') {
+            agent {
+                docker {
+                    image 'node:22-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+         
+                sh """
+                    node --version
+                    npm ci
+                    npm run build
+                """
+            }
+        }
 
         stage('AWS Deploy') {
             agent {
@@ -19,8 +34,10 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 's3-aws', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh """
-                       aws --version
-                        aws ecs register-task-definition --cli-input-json file://my-app/task-definition.json
+                        aws --version
+                        ls -la ./dist
+                        aws s3 sync ./dist s3://${S3BUCKET} --delete
+                        aws s3 ls s3://${S3BUCKET}
                         
                     """
                            cleanWs()
