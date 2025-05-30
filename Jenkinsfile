@@ -22,7 +22,11 @@ pipeline {
                     sh """
                        aws --version
                         aws ecs register-task-definition --cli-input-json file://task-definition.json
-                        
+                        aws ecs update-service \
+    --cluster learn-jenkin-prod \
+    --service LearnJenkins-App-Prod-service-79ycmcel \
+    --task-definition LearnJenkins-App-Prod:2
+
                         
                     """
                            cleanWs()
